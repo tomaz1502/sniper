@@ -48,16 +48,8 @@ Using elpi avoid these difficulties, even if the user needs
 to create its own copy of all the tactic which take arguments 
 TODO : a PR in Coq to avoid this problem *)
 
+Require Import elpi_stuff.
 From elpi Require Import elpi.
-
-Elpi Tactic apply_ltac1.
-Elpi Accumulate lp:{{
-
-  solve ((goal _ _ _ _ [str S| H]) as G) GS :-
-    coq.ltac.call S H G GS.
-
-}}.
-Elpi Typecheck.
 
 Ltac2 get_opt o := match o with None => Control.throw Not_found | Some x => x end.
 
@@ -78,6 +70,7 @@ Ltac myexact t := exact t.
 
 Goal (True /\ True) /\ (True -> True -> True /\ True).
 Proof.
+
 run "split" [].
 let str := "split" in run str [].
 run "myexact" ['I].
@@ -267,5 +260,6 @@ Ltac2 trigger_trakt_bool_hyp () :=
 Ltac2 trigger_trakt_bool_goal () :=
   (TNot (TIs (TGoal, NotArg) (TEq (TTerm 'bool NotArg) tDiscard tDiscard NotArg))).
 
+Ltac2 trigger_foo := TIs (TGoal, NotArg) (TAnd (TAny (Arg id)) (TAny (Arg id)) NotArg).
 
-
+Ltac2 filter_foo := FTrivial.

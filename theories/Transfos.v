@@ -17,3 +17,5 @@ Require Export higher_order.
 Require Export fold_local_def.
 Require Export anonymous_functions.
 Require Export add_compdecs.
+Require Export trivial.
+Require Export atomic_ho_eq.

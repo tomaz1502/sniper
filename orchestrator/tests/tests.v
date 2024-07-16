@@ -143,5 +143,3 @@ Goal (forall (H1 : forall (A B : Type) (l : list A) (l' : list B),
                   end end), False).
 Proof. intros. test_trigger (trigger_pattern_matching). Abort.
 
-
-

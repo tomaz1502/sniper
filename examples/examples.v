@@ -31,7 +31,45 @@ Local Open Scope Z_scope.
 
 (* A simple example *)
 Goal forall (l : list Z) (x : Z), hd_error l = Some x -> (l <> nil).
-Proof. snipe_no_check. Qed.
+Proof.
+  intros.
+  ltac2:(scope_full ()).
+  Abort.
+ (*  my_higher_order. *)
+ (*  my_reflexivity hd_error. *)
+ (*  my_unfold_refl H0. *)
+ (*  my_higher_order_equalities H0. *)
+ (*  my_algebraic_types list. *)
+ (*  my_pattern_matching H0. *)
+ (*  my_algebraic_types option. *)
+ (*  my_gen_principle_temporary. *)
+ (*  my_add_compdec (list Z). *)
+ (*  my_polymorphism_elpi. *)
+ (*  my_add_compdec (option Z). *)
+ (*  my_anonymous_function (fun elpi_ctx_entry_105_ : list Z => *)
+ (* match elpi_ctx_entry_105_ with *)
+ (* | [] => None *)
+ (* | elpi_ctx_entry_106_ :: _ => Some elpi_ctx_entry_106_ *)
+ (* end). *)
+ (*  my_reflexivity f. *)
+ (*  my_unfold_refl H0. *)
+ (*  my_higher_order_equalities H0. *)
+ (*  my_higher_order_equalities x. *)
+ (*  my_pattern_matching H0. *)
+ (*  my_fold_local_def_in_hyp_goal f f. *)
+ (*  intros. *)
+ (*  my_higher_order. *)
+ (*  my_reflexivity hd_error. *)
+ (*  my_unfold_refl H0. *)
+ (*  my_higher_order_equalities H0. *)
+ (*  my_algebraic_types list. *)
+ (*  my_anonymous_function (fun (A : Type) (l : list A) => *)
+ (* match l with *)
+ (* | [] => None *)
+ (* | x :: _ => Some x *)
+ (* end). *)
+ (* my_reflexivity f. *)
+Qed.
 
 (* The `snipe` and `snipe_no_check` tactics requires instances of equality to be decidable.
    It is in particular visible with type variables. *)

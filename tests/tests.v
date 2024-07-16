@@ -239,10 +239,13 @@ Theorem hd_error_nil : hd_error (@nil A) = None.
   Time snipe_no_check.
   Qed.
 
-  Theorem app_eq_nil' : forall l l':list A, 
+  Theorem app_eq_nil' : forall l l':list A,
 (l ++ l') = nil -> l = nil /\ l' = nil.
-  Proof. 
-  Time snipe_no_check. Qed.
+  Proof.
+  (* scope_info. *)
+  (* verit. *)
+  (* verit. *)
+  Time scope_info. Qed.
 
    Theorem app_eq_unit :
     forall (x y:list A) (a:A),
