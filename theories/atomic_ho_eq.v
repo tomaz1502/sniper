@@ -3,13 +3,6 @@ From MetaCoq.Template Require Import All.
 Require Import utilities.
 Require Import List.
 
-Print metacoq_get_value.
-Check term.
-Check eqb_term.
-Check eq.
-Print name.
-Print ident.
-
 Definition my_id (t : Type) (a : t) := a.
 
 Fixpoint f (ho_eq_quoted : term) :=
