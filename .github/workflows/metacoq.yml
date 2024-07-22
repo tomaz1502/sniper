@@ -2,7 +2,7 @@ name: MetaCoq CI
 
 on:
   schedule:
-    # Every monday at 00h00
+    # Every 8 minutes
     - cron: '*/8 * * * *'
   # Enables manually running the workflow
   workflow_dispatch:
@@ -15,15 +15,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Sniper Repository
+      - name: Checkout Metacoq Repository
         uses: actions/checkout@v3
         with:
           repository: metacoq/metacoq
           ref: main
           path: metacoq
-      - uses: coq-community/docker-coq-action@v1
-        with:
-          coq_version: dev
 
       - name: Get Date of Last Commit
         id: get_last_commit_date
@@ -45,6 +42,13 @@ jobs:
       - name: Checkout repo
         if: env.recent_commit == 'true'
         uses: actions/checkout@v3
+
+      - name: Use Coq Image
+        if: env.recent_commit == 'true'
+        uses: coq-community/docker-coq-action@v1
+        with:
+          coq_version: dev
+          opam_file: 'coq-sniper.opam'
 
       - name: Run tests
         if: env.recent_commit == 'true'
