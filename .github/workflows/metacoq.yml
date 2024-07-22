@@ -39,14 +39,13 @@ jobs:
       #       echo "recent_commit=false" >> $GITHUB_ENV
       #     fi
 
-      - name: Checkout SMTCoq master
+      - name: Checkout Sniper master
+      # if: env.recent_commit == 'true'
         uses: actions/checkout@v3
         with:
-          repository: smtcoq/smtcoq
-          ref: with-trakt-coq-master
+          ref: coq-master
 
       # - name: Checkout repo
-      #   # if: env.recent_commit == 'true'
       #   uses: actions/checkout@v3
       #   with:
       #     ref: coq-master
@@ -56,11 +55,4 @@ jobs:
         uses: coq-community/docker-coq-action@v1
         with:
           coq_version: dev
-          opam_file: 'coq-smtcoq.opam'
-
-      # - name: Run tests
-      #   if: env.recent_commit == 'true'
-      #   run: |
-      #     opam install . --deps-only
-      #     make
-      #     make test
+          opam_file: 'coq-sniper.opam'
