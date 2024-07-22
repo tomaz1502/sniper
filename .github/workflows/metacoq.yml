@@ -15,17 +15,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout foo Repository
+      - name: Checkout Sniper Repository
         uses: actions/checkout@v3
         with:
           repository: metacoq/metacoq
           ref: main
           path: metacoq
+      - uses: coq-community/docker-coq-action@v1
+        with:
+          coq_version: dev
 
       - name: Get Date of Last Commit
         id: get_last_commit_date
         run: |
-          last_commit_date=$(cd foo && git log -1 --format=%cd --date=iso)
+          last_commit_date=$(cd metacoq && git log -1 --format=%cd --date=iso)
           echo "last_commit_date=$last_commit_date" >> $GITHUB_ENV
 
       - name: Check if Last Commit was Within Last Week
