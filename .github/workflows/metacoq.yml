@@ -42,6 +42,8 @@ jobs:
       - name: Checkout repo
         if: env.recent_commit == 'true'
         uses: actions/checkout@v3
+        with:
+          ref: coq-master
 
       - name: Use Coq Image
         if: env.recent_commit == 'true'
