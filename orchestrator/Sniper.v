@@ -32,7 +32,7 @@ Ltac my_unfold_in H t := unfold_in H t.
 
 (* Ltac my_trakt_bool := revert_all ; trakt bool ; intros.  *)
 
-Ltac my_higher_order_equalities H := atomic_ho_eq H.
+Ltac my_higher_order_equalities H := expand_hyp H; clear H.
 
 Ltac my_higher_order := prenex_higher_order.
 
