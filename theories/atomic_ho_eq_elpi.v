@@ -1,4 +1,107 @@
 From elpi Require Import elpi.
+Require Import List.
+Import ListNotations.
+From Sniper Require Import Sniper.
+From Sniper.orchestrator Require Import Sniper.
+(* From Sniper Require Import verit. *)
+From SMTCoq Require Import Database_trakt.
+From SMTCoq Require Import SMT_terms.
+Require Import ZArith.
+From Trakt Require Import Trakt.
+
+
+Local Open Scope Z_scope.
+
+Goal forall xs : list Z , (match xs with | [] => 3 | _ :: _ => 4 end) <= 4.
+  pose (f := fun (ys : list Z) => match ys with | [] => 3 | _ :: _ => 4 end).
+  intro xs.
+  fold (f xs).
+  snipe.
+Qed.
+
+Inductive t : Type :=
+  | foo1 : t.
+  (* | foo2 : t *)
+  (* | foo3 : nat -> t *)
+  (* | foo4 : bool -> t *)
+  (* | foo5 : t -> t -> t. *)
+
+
+Goal forall x y : nat, ((if x <? y then x else y) <= x)%nat.
+  intros x y.
+  trakt Z bool.
+  Unshelve.
+  pose (f := fun a b => (if a <? b then  a else b)%nat).
+  intros x y.
+  fold (f x y).
+  snipe.
+Qed.
+Goal forall (xs : list nat) (o : option nat) ,
+       (match xs with
+         | [] => match o with
+                  | None => 42
+                  | Some x => x
+                end
+         | h::t => h
+       end >= 0)%nat.
+  intros xs o.
+  pose (f := (fun xs' o' => match xs' with | [] => match o' with | Some x => x | None => 42 end | h :: _ => h end)%nat).
+  fold (f xs o).
+  scope.
+
+
+(*   assert (H : CompDec Z) by admit. *)
+  scope. verit_orch.
+  verit_orch.
+  
+
+
+Elpi Tactic match_to_eqn.
+Elpi Accumulate lp:{{
+
+pred mkeqbo i:term, i:term, i:term, i:term, o:term.
+mkeqbo {{ fun x => lp:(Bo x) }} K E M {{ fun x => lp:(Bo1 x) }} :- !,
+  @pi-decl `x` _ x\
+    mkeqbo (Bo x) {coq.mk-app K [x]} E M (Bo1 x).
+mkeqbo B K E (match _ RTy Bs as M) {{ fun h : lp:E = lp:K => lp:Proof h : lp:Ty }} :-
+  Proof = {{ @eq_ind_r _ lp:K lp:Pred (refl_equal lp:B) lp:E }},
+  Pred = {{ fun x => lp:{{ match {{ x }} RTy Bs }} = lp:B }},
+  Ty = {{ lp:M = lp:B }}.
+
+pred mkeqn i:list term, i:list term, i:term, i:term, o:term.
+mkeqn [] [] _ _ {{ _ }}.
+mkeqn [B|Bs] [K|Ks] E M {{ let h := lp:Bo in lp:(R h) }} :-
+  mkeqbo B K E M Bo,
+  @pi-def `h` _ Bo h\
+    mkeqn Bs Ks E M (R h).
+
+solve (goal _ _ _ _ [trm (match E _ Bs as M)] as G) GL :- std.do! [
+  std.assert-ok! (coq.typecheck M _) "illtyped input",
+  coq.typecheck E Ty ok,
+  coq.safe-dest-app Ty (global (indt I)) Args,
+  coq.env.indt I _ _ Pno _ Ks _,
+  std.take Pno Args Params,
+  std.map Ks (x\r\ coq.mk-app (global (indc x)) Params r) KPs,
+  mkeqn Bs KPs E M T,
+  coq.say "M=" M "T=" {coq.term->string T},
+  std.assert! (refine T G GL) "bug in term generation"
+].
+}}.
+Elpi Typecheck.
+
+
+
+
+Lemma foo : nat.
+
+elpi match_to_eqn (match 2 with
+| 0 => true
+| S k => false
+end).
+
+
+
+
 
 
 Elpi Tactic foo.
